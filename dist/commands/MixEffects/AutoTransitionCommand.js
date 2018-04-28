@@ -1,20 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class AutoTransitionCommand {
+const AbstractCommand_1 = require("../AbstractCommand");
+class AutoTransitionCommand extends AbstractCommand_1.default {
     constructor() {
-        this.rawName = 'DAut'; // this seems unnecessary.
+        super(...arguments);
+        this.rawName = 'DAut';
     }
     deserialize(rawCommand) {
         this.mixEffect = rawCommand[0];
     }
     serialize() {
-        let rawCommand = 'DAut';
+        const rawCommand = 'DAut';
         return new Buffer([...Buffer.from(rawCommand), this.mixEffect, 0x00, 0x00, 0x00]);
-    }
-    getAttributes() {
-        return {
-            mixEffect: this.mixEffect
-        };
     }
     applyToState() {
         // nothing

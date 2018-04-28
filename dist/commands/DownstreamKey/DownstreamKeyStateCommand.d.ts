@@ -1,24 +1,12 @@
 /// <reference types="node" />
-import IAbstractCommand from '../AbstractCommand';
-import { AtemState } from '../../lib/atemState';
-export declare class DownstreamKeyStateCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../AbstractCommand';
+import { AtemState } from '../../state';
+import { DownstreamKeyer } from '../../state/video';
+export declare class DownstreamKeyStateCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     downstreamKeyId: number;
-    onAir: boolean;
-    inTransition: boolean;
-    isAuto: boolean;
-    remainingFrames: number;
+    properties: DownstreamKeyer;
     deserialize(rawCommand: Buffer): void;
     serialize(): Buffer;
-    getAttributes(): {
-        downstreamKeyId: number;
-        onAir: boolean;
-        inTransition: boolean;
-        isAuto: boolean;
-        remainingFrames: number;
-    };
     applyToState(state: AtemState): void;
 }

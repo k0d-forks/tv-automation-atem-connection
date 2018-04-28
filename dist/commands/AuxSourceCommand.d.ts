@@ -1,18 +1,13 @@
 /// <reference types="node" />
-import IAbstractCommand from './AbstractCommand';
-import { AtemState } from '../lib/atemState';
-export declare class AuxSourceCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from './AbstractCommand';
+import { AtemState } from '../state';
+export declare class AuxSourceCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     auxBus: number;
-    source: number;
-    deserialize(rawCommand: Buffer): void;
-    serialize(): Buffer;
-    getAttributes(): {
-        auxBus: number;
+    properties: {
         source: number;
     };
+    deserialize(rawCommand: Buffer): void;
+    serialize(): Buffer;
     applyToState(state: AtemState): void;
 }

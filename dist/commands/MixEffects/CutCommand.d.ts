@@ -1,15 +1,10 @@
 /// <reference types="node" />
-import IAbstractCommand from '../AbstractCommand';
-export declare class CutCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../AbstractCommand';
+export declare class CutCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     mixEffect: number;
+    properties: null;
     deserialize(rawCommand: Buffer): void;
     serialize(): Buffer;
-    getAttributes(): {
-        mixEffect: number;
-    };
     applyToState(): void;
 }

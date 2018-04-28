@@ -6,5 +6,6 @@ tslib_1.__exportStar(require("./DeviceProfile"), exports);
 tslib_1.__exportStar(require("./Macro"), exports);
 tslib_1.__exportStar(require("./Media"), exports);
 tslib_1.__exportStar(require("./MixEffects"), exports);
+tslib_1.__exportStar(require("./SuperSource"), exports);
 tslib_1.__exportStar(require("./AuxSourceCommand"), exports);
 //# sourceMappingURL=index.js.map

@@ -1,31 +1,19 @@
 /// <reference types="node" />
-import IAbstractCommand from '../AbstractCommand';
-import { AtemState } from '../../lib/atemState';
-export declare class MediaPlayerStatusCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import { AtemState } from '../../state';
+import { MediaPlayer } from '../../state/media';
+import AbstractCommand from '../AbstractCommand';
+export declare class MediaPlayerStatusCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
-    flag: number;
     mediaPlayerId: number;
-    playing: boolean;
-    loop: boolean;
-    atBeginning: boolean;
-    clipFrame: number;
     MaskFlags: {
-        Playing: number;
-        Loop: number;
-        Beginning: number;
-        Frame: number;
+        playing: number;
+        loop: number;
+        atBeginning: number;
+        frame: number;
     };
+    properties: MediaPlayer;
+    updateProps(newProps: Partial<MediaPlayer>): void;
     deserialize(rawCommand: Buffer): void;
     serialize(): Buffer;
-    getAttributes(): {
-        mediaPlayerId: number;
-        playing: boolean;
-        loop: boolean;
-        atBeginning: boolean;
-        clipFrame: number;
-    };
     applyToState(state: AtemState): void;
 }

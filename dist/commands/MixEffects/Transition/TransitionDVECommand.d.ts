@@ -1,55 +1,27 @@
 /// <reference types="node" />
-import IAbstractCommand from '../../AbstractCommand';
-import { AtemState, DVEEffect } from '../../../lib/atemState';
-export declare class TransitionDVECommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../../AbstractCommand';
+import { AtemState } from '../../../state';
+import { DVETransitionSettings } from '../../../state/video';
+export declare class TransitionDVECommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     mixEffect: number;
-    rate: number;
-    logoRate: number;
-    style: DVEEffect;
-    fillSource: number;
-    keySource: number;
-    enableKey: boolean;
-    preMultiplied: boolean;
-    clip: number;
-    gain: number;
-    invertKey: boolean;
-    reverse: boolean;
-    flipFlop: boolean;
-    flags: number;
     MaskFlags: {
-        Rate: number;
-        LogoRate: number;
-        Style: number;
-        FillSource: number;
-        KeySource: number;
-        EnableKey: number;
-        PreMultiplied: number;
-        Clip: number;
-        Gain: number;
-        InvertKey: number;
-        Reverse: number;
-        FlipFlop: number;
-    };
-    deserialize(rawCommand: Buffer): void;
-    serialize(): Buffer;
-    getAttributes(): {
-        mixEffect: number;
         rate: number;
         logoRate: number;
-        style: DVEEffect;
+        style: number;
         fillSource: number;
         keySource: number;
-        enableKey: boolean;
-        preMultiplied: boolean;
+        enableKey: number;
+        preMultiplied: number;
         clip: number;
         gain: number;
-        invertKey: boolean;
-        reverse: boolean;
-        flipFlop: boolean;
+        invertKey: number;
+        reverse: number;
+        flipFlop: number;
     };
+    properties: DVETransitionSettings;
+    updateProps(newProps: Partial<DVETransitionSettings>): void;
+    deserialize(rawCommand: Buffer): void;
+    serialize(): Buffer;
     applyToState(state: AtemState): void;
 }

@@ -1,20 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class CutCommand {
+const AbstractCommand_1 = require("../AbstractCommand");
+class CutCommand extends AbstractCommand_1.default {
     constructor() {
-        this.rawName = 'DCut'; // this seems unnecessary.
+        super(...arguments);
+        this.rawName = 'DCut';
     }
     deserialize(rawCommand) {
         this.mixEffect = rawCommand[0];
     }
     serialize() {
-        let rawCommand = 'DCut';
+        const rawCommand = 'DCut';
         return new Buffer([...Buffer.from(rawCommand), this.mixEffect, 0xef, 0xbf, 0x5f]);
-    }
-    getAttributes() {
-        return {
-            mixEffect: this.mixEffect
-        };
     }
     applyToState() {
         // nothing

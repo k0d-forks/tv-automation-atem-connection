@@ -1,0 +1,15 @@
+import { DeviceInfo } from './info';
+import { AtemVideoState } from './video';
+import { AtemAudioState } from './audio';
+import { MediaState } from './media';
+export declare class AtemState {
+    info: DeviceInfo;
+    video: AtemVideoState;
+    channels: Array<{
+        name: string;
+        label: string;
+    }>;
+    tallies: Array<number>;
+    audio: AtemAudioState;
+    media: MediaState;
+}

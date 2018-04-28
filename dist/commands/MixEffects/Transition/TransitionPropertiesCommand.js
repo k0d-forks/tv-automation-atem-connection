@@ -1,45 +1,41 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class TransitionPropertiesCommand {
+const AbstractCommand_1 = require("../../AbstractCommand");
+class TransitionPropertiesCommand extends AbstractCommand_1.default {
     constructor() {
+        super(...arguments);
         this.rawName = 'TrSS';
         this.MaskFlags = {
             style: 1 << 0,
             selection: 1 << 1
         };
     }
+    updateProps(newProps) {
+        this._updateProps(newProps);
+    }
     deserialize(rawCommand) {
         this.mixEffect = rawCommand[0];
-        this.style = rawCommand[1];
-        this.selection = rawCommand[2];
-        this.nextStyle = rawCommand[3];
-        this.nextSelection = rawCommand[4];
-    }
-    serialize() {
-        let rawCommand = 'CTTp';
-        let buffer = new Buffer(8);
-        buffer.fill(0);
-        Buffer.from(rawCommand).copy(buffer, 0);
-        buffer.writeUInt8(this.flags, 4);
-        buffer.writeUInt8(this.mixEffect, 5);
-        buffer.writeUInt8(this.style, 6);
-        buffer.writeUInt8(this.selection, 7);
-        return buffer;
-    }
-    getAttributes() {
-        return {
-            mixEffect: this.mixEffect,
-            style: this.style,
-            selection: this.selection,
-            nextStyle: this.nextStyle,
-            nextSelection: this.nextSelection
+        this.properties = {
+            style: rawCommand[1],
+            selection: rawCommand[2],
+            nextStyle: rawCommand[3],
+            nextSelection: rawCommand[4]
         };
     }
+    serialize() {
+        const rawCommand = 'CTTp';
+        const buffer = new Buffer(8);
+        buffer.fill(0);
+        Buffer.from(rawCommand).copy(buffer, 0);
+        buffer.writeUInt8(this.flag, 4);
+        buffer.writeUInt8(this.mixEffect, 5);
+        buffer.writeUInt8(this.properties.style, 6);
+        buffer.writeUInt8(this.properties.selection, 7);
+        return buffer;
+    }
     applyToState(state) {
-        let mixEffect = state.video.getMe(this.mixEffect);
-        let props = this.getAttributes();
-        delete props.mixEffect;
-        mixEffect.transitionProperties = props;
+        const mixEffect = state.video.getMe(this.mixEffect);
+        mixEffect.transitionProperties = Object.assign({}, this.properties);
     }
 }
 exports.TransitionPropertiesCommand = TransitionPropertiesCommand;

@@ -4,9 +4,9 @@ const Commands = require("../commands");
 class CommandParser {
     constructor() {
         this.commands = {};
-        for (let cmd in Commands) {
+        for (const cmd in Commands) {
             try {
-                let rawName = new Commands[cmd]().rawName;
+                const rawName = new Commands[cmd]().rawName;
                 this.commands[rawName] = Commands[cmd];
             }
             catch (e) {

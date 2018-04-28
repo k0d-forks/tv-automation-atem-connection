@@ -1,26 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class TransitionMixCommand {
+const AbstractCommand_1 = require("../../AbstractCommand");
+class TransitionMixCommand extends AbstractCommand_1.default {
     constructor() {
-        this.rawName = 'TMxP'; // this seems unnecessary.
+        super(...arguments);
+        this.rawName = 'TMxP';
+    }
+    updateProps(newProps) {
+        this._updateProps(newProps);
     }
     deserialize(rawCommand) {
         this.mixEffect = rawCommand[0];
-        this.rate = rawCommand[1];
-    }
-    serialize() {
-        let rawCommand = 'CTMx';
-        return new Buffer([...Buffer.from(rawCommand), this.mixEffect, this.rate, 0x00, 0x00]);
-    }
-    getAttributes() {
-        return {
-            mixEffect: this.mixEffect,
-            rate: this.rate
+        this.properties = {
+            rate: rawCommand[1]
         };
     }
+    serialize() {
+        const rawCommand = 'CTMx';
+        return new Buffer([
+            ...Buffer.from(rawCommand),
+            this.mixEffect,
+            this.properties.rate,
+            0x00, 0x00
+        ]);
+    }
     applyToState(state) {
-        let mixEffect = state.video.getMe(this.mixEffect);
-        mixEffect.transitionSettings.mix = { rate: this.rate };
+        const mixEffect = state.video.getMe(this.mixEffect);
+        mixEffect.transitionSettings.mix = Object.assign({}, this.properties);
     }
 }
 exports.TransitionMixCommand = TransitionMixCommand;

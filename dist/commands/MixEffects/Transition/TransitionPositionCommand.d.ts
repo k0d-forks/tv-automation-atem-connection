@@ -1,22 +1,15 @@
 /// <reference types="node" />
-import IAbstractCommand from '../../AbstractCommand';
-import { AtemState } from '../../../lib/atemState';
-export declare class TransitionPositionCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../../AbstractCommand';
+import { AtemState } from '../../../state';
+export declare class TransitionPositionCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     mixEffect: number;
-    inTransition: boolean;
-    remainingFrames: number;
-    handlePosition: number;
-    deserialize(rawCommand: Buffer): void;
-    serialize(): Buffer;
-    getAttributes(): {
-        mixEffect: number;
-        inTransition: boolean;
-        remainingFrames: number;
+    properties: {
+        readonly inTransition: boolean;
+        readonly remainingFrames: number;
         handlePosition: number;
     };
+    deserialize(rawCommand: Buffer): void;
+    serialize(): Buffer;
     applyToState(state: AtemState): void;
 }

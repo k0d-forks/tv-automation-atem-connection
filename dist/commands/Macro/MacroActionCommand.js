@@ -1,26 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class MacroActionCommand {
+const AbstractCommand_1 = require("../AbstractCommand");
+const enums_1 = require("../../enums");
+class MacroActionCommand extends AbstractCommand_1.default {
     constructor() {
+        super(...arguments);
         this.rawName = 'MAct'; // this seems unnecessary.
-        this.MacroAction = {
-            Run: 0,
-            Stop: 1,
-            StopRecord: 2,
-            InsertUserWait: 3,
-            Continue: 4,
-            Delete: 5
-        };
     }
     deserialize() {
         //
     }
     serialize() {
-        let rawCommand = 'MAct';
-        let buffer = new Buffer([...Buffer.from(rawCommand), 0x00, 0x00, this.action, 0x00]);
-        switch (this.action) {
-            case this.MacroAction.Run:
-            case this.MacroAction.Delete:
+        const rawCommand = 'MAct';
+        const buffer = new Buffer([...Buffer.from(rawCommand), 0x00, 0x00, this.properties.action, 0x00]);
+        switch (this.properties.action) {
+            case enums_1.MacroAction.Run:
+            case enums_1.MacroAction.Delete:
                 buffer[4] = this.index >> 8;
                 buffer[5] = this.index & 0xff;
                 break;
@@ -28,9 +23,6 @@ class MacroActionCommand {
                 break;
         }
         return buffer;
-    }
-    getAttributes() {
-        return {};
     }
     applyToState() {
         //

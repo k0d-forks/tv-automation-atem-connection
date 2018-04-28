@@ -1,18 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class DownstreamKeyAutoCommand {
+const AbstractCommand_1 = require("../AbstractCommand");
+class DownstreamKeyAutoCommand extends AbstractCommand_1.default {
     constructor() {
-        this.rawName = 'DDsA'; // this seems unnecessary.
+        super(...arguments);
+        this.rawName = 'DDsA';
     }
     deserialize() {
         // nothing
     }
     serialize() {
-        let rawCommand = 'DDsA';
-        return new Buffer([...Buffer.from(rawCommand), this.downstreamKeyId, 0x00, 0x00, 0x00]);
-    }
-    getAttributes() {
-        return {};
+        const rawCommand = 'DDsA';
+        return new Buffer([
+            ...Buffer.from(rawCommand),
+            this.downstreamKeyId,
+            0x00, 0x00, 0x00
+        ]);
     }
     applyToState() {
         // nothing

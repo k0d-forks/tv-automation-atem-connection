@@ -1,22 +1,13 @@
 /// <reference types="node" />
-import IAbstractCommand from '../AbstractCommand';
-export declare class MacroActionCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../AbstractCommand';
+import { MacroAction } from '../../enums';
+export declare class MacroActionCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     index: number;
-    action: number;
-    MacroAction: {
-        Run: number;
-        Stop: number;
-        StopRecord: number;
-        InsertUserWait: number;
-        Continue: number;
-        Delete: number;
+    properties: {
+        action: MacroAction;
     };
     deserialize(): void;
     serialize(): Buffer;
-    getAttributes(): {};
     applyToState(): void;
 }

@@ -1,19 +1,12 @@
 /// <reference types="node" />
-import IAbstractCommand from '../AbstractCommand';
-import { AtemState } from '../../lib/atemState';
-export interface VersionInfo {
-    major: number;
-    minor: number;
-}
-export declare class VersionCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../AbstractCommand';
+import { AtemState } from '../../state';
+import { VersionProps } from '../../state/info';
+export declare class VersionCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
-    apiMajor: number;
-    apiMinor: number;
+    properties: VersionProps;
+    updateProps(newProps: Partial<VersionProps>): void;
     deserialize(rawCommand: Buffer): void;
     serialize(): Buffer;
-    getAttributes(): VersionInfo;
     applyToState(state: AtemState): void;
 }

@@ -1,25 +1,17 @@
 /// <reference types="node" />
-import IAbstractCommand from '../../AbstractCommand';
-import { AtemState } from '../../../lib/atemState';
-export declare enum MaskFlags {
-    Rate = 1,
-    Input = 2,
-}
-export declare class TransitionDipCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../../AbstractCommand';
+import { AtemState } from '../../../state';
+import { DipTransitionSettings } from '../../../state/video';
+export declare class TransitionDipCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     mixEffect: number;
-    rate: number;
-    input: number;
-    flag: MaskFlags;
-    deserialize(rawCommand: Buffer): void;
-    serialize(): Buffer;
-    getAttributes(): {
-        mixEffect: number;
+    MaskFlags: {
         rate: number;
         input: number;
     };
+    properties: DipTransitionSettings;
+    updateProps(newProps: Partial<DipTransitionSettings>): void;
+    deserialize(rawCommand: Buffer): void;
+    serialize(): Buffer;
     applyToState(state: AtemState): void;
 }

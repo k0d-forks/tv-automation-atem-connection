@@ -1,76 +1,45 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class AtemState {
-    constructor() {
-        this.info = new DeviceInfo();
-        this.video = new AtemVideoState();
-        this.channels = [];
-        this.tallies = [];
-        this.audio = new AtemAudioState();
-        this.media = new MediaState();
-    }
-}
-exports.AtemState = AtemState;
-class DeviceInfo {
-    constructor() {
-        this.apiVersion = new ApiInfo();
-        this.capabilities = new AtemCapabilites();
-    }
-}
-exports.DeviceInfo = DeviceInfo;
-class ApiInfo {
-}
-exports.ApiInfo = ApiInfo;
-class AtemCapabilites {
-}
-exports.AtemCapabilites = AtemCapabilites;
-class AtemVideoState {
-    constructor() {
-        this.ME = [];
-        this.downstreamKeyers = [];
-        this.auxilliaries = [];
-    }
-    getMe(index) {
-        if (!this.ME[index]) {
-            this.ME[index] = new MixEffect();
-        }
-        return this.ME[index];
-    }
-}
-exports.AtemVideoState = AtemVideoState;
-class AtemAudioState {
-    constructor() {
-        this.channels = [];
-        this.master = new AudioChannel();
-    }
-    getMe(index) {
-        if (!this.channels[index]) {
-            this.channels[index] = new AudioChannel();
-        }
-        return this.channels[index];
-    }
-}
-exports.AtemAudioState = AtemAudioState;
-class MixEffect {
-    constructor() {
-        this.transitionSettings = new TransitionSettings();
-    }
-}
-exports.MixEffect = MixEffect;
-class TransitionSettings {
-}
-exports.TransitionSettings = TransitionSettings;
-class AudioChannel {
-}
-exports.AudioChannel = AudioChannel;
-class MediaState {
-    constructor() {
-        this.stillPool = {};
-        this.clipPool = {};
-        this.players = [];
-    }
-}
-exports.MediaState = MediaState;
+var Model;
+(function (Model) {
+    Model[Model["TVS"] = 1] = "TVS";
+    Model[Model["OneME"] = 2] = "OneME";
+    Model[Model["TwoME"] = 3] = "TwoME";
+    Model[Model["PS4K"] = 4] = "PS4K";
+    Model[Model["OneME4K"] = 5] = "OneME4K";
+    Model[Model["TwoME4K"] = 6] = "TwoME4K";
+    Model[Model["TwoMEBS4K"] = 7] = "TwoMEBS4K";
+    Model[Model["TVSHD"] = 8] = "TVSHD";
+})(Model = exports.Model || (exports.Model = {}));
+var TransitionStyle;
+(function (TransitionStyle) {
+    TransitionStyle[TransitionStyle["MIX"] = 0] = "MIX";
+    TransitionStyle[TransitionStyle["DIP"] = 1] = "DIP";
+    TransitionStyle[TransitionStyle["WIPE"] = 2] = "WIPE";
+    TransitionStyle[TransitionStyle["DVE"] = 3] = "DVE";
+    TransitionStyle[TransitionStyle["STING"] = 4] = "STING";
+})(TransitionStyle = exports.TransitionStyle || (exports.TransitionStyle = {}));
+var TallyState;
+(function (TallyState) {
+    TallyState[TallyState["None"] = 0] = "None";
+    TallyState[TallyState["Program"] = 1] = "Program";
+    TallyState[TallyState["Preview"] = 2] = "Preview";
+})(TallyState = exports.TallyState || (exports.TallyState = {}));
+var ConnectionState;
+(function (ConnectionState) {
+    ConnectionState[ConnectionState["None"] = 0] = "None";
+    ConnectionState[ConnectionState["SynSent"] = 1] = "SynSent";
+    ConnectionState[ConnectionState["Established"] = 2] = "Established";
+    ConnectionState[ConnectionState["Closed"] = 3] = "Closed";
+})(ConnectionState = exports.ConnectionState || (exports.ConnectionState = {}));
+var PacketFlag;
+(function (PacketFlag) {
+    PacketFlag[PacketFlag["AckRequest"] = 1] = "AckRequest";
+    PacketFlag[PacketFlag["Connect"] = 2] = "Connect";
+    PacketFlag[PacketFlag["Repeat"] = 4] = "Repeat";
+    PacketFlag[PacketFlag["Error"] = 8] = "Error";
+    PacketFlag[PacketFlag["AckReply"] = 16] = "AckReply";
+})(PacketFlag = exports.PacketFlag || (exports.PacketFlag = {}));
 var DVEEffect;
 (function (DVEEffect) {
     DVEEffect[DVEEffect["SwooshTopLeft"] = 0] = "SwooshTopLeft";
@@ -109,4 +78,13 @@ var DVEEffect;
     DVEEffect[DVEEffect["GraphicCCWSpin"] = 33] = "GraphicCCWSpin";
     DVEEffect[DVEEffect["GraphicLogoWipe"] = 34] = "GraphicLogoWipe";
 })(DVEEffect = exports.DVEEffect || (exports.DVEEffect = {}));
-//# sourceMappingURL=atemState.js.map
+var MacroAction;
+(function (MacroAction) {
+    MacroAction[MacroAction["Run"] = 0] = "Run";
+    MacroAction[MacroAction["Stop"] = 1] = "Stop";
+    MacroAction[MacroAction["StopRecord"] = 2] = "StopRecord";
+    MacroAction[MacroAction["InsertUserWait"] = 3] = "InsertUserWait";
+    MacroAction[MacroAction["Continue"] = 4] = "Continue";
+    MacroAction[MacroAction["Delete"] = 5] = "Delete";
+})(MacroAction = exports.MacroAction || (exports.MacroAction = {}));
+//# sourceMappingURL=index.js.map

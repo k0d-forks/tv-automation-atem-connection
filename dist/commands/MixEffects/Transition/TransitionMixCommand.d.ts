@@ -1,18 +1,13 @@
 /// <reference types="node" />
-import IAbstractCommand from '../../AbstractCommand';
-import { AtemState } from '../../../lib/atemState';
-export declare class TransitionMixCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../../AbstractCommand';
+import { AtemState } from '../../../state';
+import { MixTransitionSettings } from '../../../state/video';
+export declare class TransitionMixCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     mixEffect: number;
-    rate: number;
+    properties: MixTransitionSettings;
+    updateProps(newProps: Partial<MixTransitionSettings>): void;
     deserialize(rawCommand: Buffer): void;
     serialize(): Buffer;
-    getAttributes(): {
-        mixEffect: number;
-        rate: number;
-    };
     applyToState(state: AtemState): void;
 }

@@ -1,14 +1,12 @@
 /// <reference types="node" />
-import IAbstractCommand from '../AbstractCommand';
-export declare class DownstreamKeyTieCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../AbstractCommand';
+export declare class DownstreamKeyTieCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     downstreamKeyId: number;
-    tie: boolean;
+    properties: {
+        tie: boolean;
+    };
     deserialize(): void;
     serialize(): Buffer;
-    getAttributes(): {};
     applyToState(): void;
 }

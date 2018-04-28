@@ -1,18 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class DownstreamKeyTieCommand {
+const AbstractCommand_1 = require("../AbstractCommand");
+class DownstreamKeyTieCommand extends AbstractCommand_1.default {
     constructor() {
-        this.rawName = 'CDsT'; // this seems unnecessary.
+        super(...arguments);
+        this.rawName = 'CDsT';
     }
     deserialize() {
         // nothing
     }
     serialize() {
-        let rawCommand = 'CDsT';
-        return new Buffer([...Buffer.from(rawCommand), this.downstreamKeyId, this.tie, 0x00, 0x00]);
-    }
-    getAttributes() {
-        return {};
+        const rawCommand = 'CDsT';
+        return new Buffer([
+            ...Buffer.from(rawCommand),
+            this.downstreamKeyId,
+            this.properties.tie,
+            0x00, 0x00
+        ]);
     }
     applyToState() {
         // nothing

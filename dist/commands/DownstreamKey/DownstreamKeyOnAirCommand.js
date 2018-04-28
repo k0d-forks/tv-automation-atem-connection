@@ -1,18 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class DownstreamKeyOnAirCommand {
+const AbstractCommand_1 = require("../AbstractCommand");
+class DownstreamKeyOnAirCommand extends AbstractCommand_1.default {
     constructor() {
-        this.rawName = 'CDsL'; // this seems unnecessary.
+        super(...arguments);
+        this.rawName = 'CDsL';
     }
     deserialize() {
         // nothing
     }
     serialize() {
-        let rawCommand = 'CDsL';
-        return new Buffer([...Buffer.from(rawCommand), this.downstreamKeyId, this.onair, 0x00, 0x00]);
-    }
-    getAttributes() {
-        return {};
+        const rawCommand = 'CDsL';
+        return new Buffer([
+            ...Buffer.from(rawCommand),
+            this.downstreamKeyId,
+            this.properties.onAir,
+            0x00, 0x00
+        ]);
     }
     applyToState() {
         // nothing

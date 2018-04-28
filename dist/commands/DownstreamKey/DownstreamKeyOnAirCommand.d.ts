@@ -1,14 +1,12 @@
 /// <reference types="node" />
-import IAbstractCommand from '../AbstractCommand';
-export declare class DownstreamKeyOnAirCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../AbstractCommand';
+export declare class DownstreamKeyOnAirCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     downstreamKeyId: number;
-    onair: boolean;
+    properties: {
+        onAir: boolean;
+    };
     deserialize(): void;
     serialize(): Buffer;
-    getAttributes(): {};
     applyToState(): void;
 }

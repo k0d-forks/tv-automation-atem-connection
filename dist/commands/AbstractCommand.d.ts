@@ -1,22 +1,18 @@
 /// <reference types="node" />
-import { AtemState } from '../lib/atemState';
-export interface IAbstractCommand {
-    rawName: string;
+import { AtemState } from '../state';
+export default abstract class AbstractCommand {
+    abstract rawName: string;
     packetId: number;
+    MaskFlags?: {
+        [key: string]: number;
+    };
+    flag: number;
     resolve: (cmd: AbstractCommand) => void;
     reject: (cmd: AbstractCommand) => void;
-    deserialize: (rawCommand: Buffer) => void;
-    serialize: () => Buffer;
-    getAttributes: () => any;
-    applyToState: (state: AtemState) => void;
-}
-export default class AbstractCommand implements IAbstractCommand {
-    rawName: string;
-    packetId: number;
-    resolve: (cmd: AbstractCommand) => void;
-    reject: (cmd: AbstractCommand) => void;
-    deserialize: (rawCommand: Buffer) => void;
-    serialize: () => Buffer;
-    getAttributes: () => any;
-    applyToState: (state: AtemState) => void;
+    abstract properties: any;
+    abstract deserialize(rawCommand: Buffer): void;
+    abstract serialize(): Buffer;
+    abstract applyToState(state: AtemState): void;
+    updateProps(newProps: object): void;
+    protected _updateProps(newProps: Object): void;
 }

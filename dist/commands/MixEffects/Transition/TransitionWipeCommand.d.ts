@@ -1,39 +1,11 @@
 /// <reference types="node" />
-import IAbstractCommand from '../../AbstractCommand';
-import { AtemState } from '../../../lib/atemState';
-export declare class TransitionWipeCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../../AbstractCommand';
+import { AtemState } from '../../../state';
+import { WipeTransitionSettings } from '../../../state/video';
+export declare class TransitionWipeCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     mixEffect: number;
-    flags: number;
-    rate: number;
-    pattern: number;
-    borderWidth: number;
-    borderInput: number;
-    symmetry: number;
-    borderSoftness: number;
-    xPosition: number;
-    yPosition: number;
-    reverseDirection: boolean;
-    flipFlop: boolean;
-    maskFlags: {
-        Rate: number;
-        Pattern: number;
-        BorderWidth: number;
-        BorderInput: number;
-        Symmetry: number;
-        BorderSoftness: number;
-        XPosition: number;
-        YPosition: number;
-        ReverseDirection: number;
-        FlipFlop: number;
-    };
-    deserialize(rawCommand: Buffer): void;
-    serialize(): Buffer;
-    getAttributes(): {
-        mixEffect: number;
+    MaskFlags: {
         rate: number;
         pattern: number;
         borderWidth: number;
@@ -42,8 +14,12 @@ export declare class TransitionWipeCommand implements IAbstractCommand {
         borderSoftness: number;
         xPosition: number;
         yPosition: number;
-        reverseDirection: boolean;
-        flipFlop: boolean;
+        reverseDirection: number;
+        flipFlop: number;
     };
+    properties: WipeTransitionSettings;
+    updateProps(newProps: Partial<WipeTransitionSettings>): void;
+    deserialize(rawCommand: Buffer): void;
+    serialize(): Buffer;
     applyToState(state: AtemState): void;
 }

@@ -1,18 +1,13 @@
 /// <reference types="node" />
 import AbstractCommand from '../AbstractCommand';
-import { AtemState } from '../../lib/atemState';
-export declare class ProductIdentifierCommand implements AbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import { AtemState } from '../../state';
+export declare class ProductIdentifierCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
-    deviceName: string;
-    model: number;
-    deserialize(rawCommand: Buffer): void;
-    serialize(): Buffer;
-    getAttributes(): {
+    properties: {
         deviceName: string;
         model: number;
     };
+    deserialize(rawCommand: Buffer): void;
+    serialize(): Buffer;
     applyToState(state: AtemState): void;
 }

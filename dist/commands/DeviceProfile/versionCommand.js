@@ -1,25 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class VersionCommand {
+const AbstractCommand_1 = require("../AbstractCommand");
+class VersionCommand extends AbstractCommand_1.default {
     constructor() {
+        super(...arguments);
         this.rawName = '_ver';
     }
+    updateProps(newProps) {
+        this._updateProps(newProps);
+    }
     deserialize(rawCommand) {
-        this.apiMajor = rawCommand[1];
-        this.apiMinor = rawCommand[3];
+        this.properties = {
+            major: rawCommand[1],
+            minor: rawCommand[3]
+        };
     }
     serialize() {
         return new Buffer(0);
     }
-    getAttributes() {
-        return {
-            major: this.apiMajor,
-            minor: this.apiMinor
-        };
-    }
     applyToState(state) {
-        state.info.apiVersion.major = this.apiMajor;
-        state.info.apiVersion.minor = this.apiMinor;
+        state.info.apiVersion = Object.assign({}, this.properties);
     }
 }
 exports.VersionCommand = VersionCommand;

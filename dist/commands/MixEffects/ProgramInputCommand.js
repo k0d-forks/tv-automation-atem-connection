@@ -1,27 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const atemUtil_1 = require("../../lib/atemUtil");
-class ProgramInputCommand {
+const AbstractCommand_1 = require("../AbstractCommand");
+class ProgramInputCommand extends AbstractCommand_1.default {
     constructor() {
+        super(...arguments);
         this.rawName = 'PrgI';
     }
     deserialize(rawCommand) {
         this.mixEffect = rawCommand[0];
-        this.source = atemUtil_1.Util.parseNumber(rawCommand.slice(2, 4));
-    }
-    serialize() {
-        let rawCommand = 'CPgI';
-        return new Buffer([...Buffer.from(rawCommand), this.mixEffect, 0x00, this.source >> 8, this.source & 0xFF]);
-    }
-    getAttributes() {
-        return {
-            mixEffect: this.mixEffect,
-            source: this.source
+        this.properties = {
+            source: rawCommand.readUInt8(2)
         };
     }
+    serialize() {
+        const rawCommand = 'CPgI';
+        return new Buffer([
+            ...Buffer.from(rawCommand),
+            this.mixEffect,
+            0x00,
+            this.properties.source >> 8,
+            this.properties.source & 0xFF
+        ]);
+    }
     applyToState(state) {
-        let mixEffect = state.video.getMe(this.mixEffect);
-        mixEffect.programInput = this.source;
+        const mixEffect = state.video.getMe(this.mixEffect);
+        mixEffect.programInput = this.properties.source;
     }
 }
 exports.ProgramInputCommand = ProgramInputCommand;

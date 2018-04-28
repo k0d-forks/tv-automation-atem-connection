@@ -1,19 +1,6 @@
 /// <reference types="node" />
 import { EventEmitter } from 'events';
 import AbstractCommand from '../commands/AbstractCommand';
-export declare enum ConnectionState {
-    None = 0,
-    SynSent = 1,
-    Established = 2,
-    Closed = 3,
-}
-export declare enum PacketFlag {
-    AckRequest = 1,
-    Connect = 2,
-    Repeat = 4,
-    Error = 8,
-    AckReply = 16,
-}
 export declare class AtemSocket extends EventEmitter {
     private _connectionState;
     private _localPacketId;

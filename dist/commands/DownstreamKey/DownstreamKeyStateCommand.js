@@ -1,32 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class DownstreamKeyStateCommand {
+const AbstractCommand_1 = require("../AbstractCommand");
+class DownstreamKeyStateCommand extends AbstractCommand_1.default {
     constructor() {
+        super(...arguments);
         this.rawName = 'DskS';
     }
     deserialize(rawCommand) {
         this.downstreamKeyId = rawCommand[0];
-        this.onAir = rawCommand[1] === 1;
-        this.inTransition = rawCommand[2] === 1;
-        this.isAuto = rawCommand[3] === 1;
-        this.remainingFrames = rawCommand[4];
-    }
-    serialize() {
-        return new Buffer(0); // bad. don't do this.
-    }
-    getAttributes() {
-        return {
-            downstreamKeyId: this.downstreamKeyId,
-            onAir: this.onAir,
-            inTransition: this.inTransition,
-            isAuto: this.isAuto,
-            remainingFrames: this.remainingFrames
+        this.properties = {
+            onAir: rawCommand[1] === 1,
+            inTransition: rawCommand[2] === 1,
+            isAuto: rawCommand[3] === 1,
+            remainingFrames: rawCommand[4]
         };
     }
+    serialize() {
+        // TODO(Lange - 2018-04-26): Commands such as this one don't have a corresponding serialize companion.
+        // Perhaps we should restructure the code to make commands like this less awkward, and avoid
+        // needing to define a stub serialize method.
+        return new Buffer(0);
+    }
     applyToState(state) {
-        let object = this.getAttributes();
-        delete object.downstreamKeyId;
-        state.video.downstreamKeyers[this.downstreamKeyId] = object;
+        state.video.downstreamKeyers[this.downstreamKeyId] = Object.assign({}, this.properties);
     }
 }
 exports.DownstreamKeyStateCommand = DownstreamKeyStateCommand;

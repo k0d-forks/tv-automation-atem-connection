@@ -1,46 +1,24 @@
 /// <reference types="node" />
-import IAbstractCommand from '../../AbstractCommand';
-import { AtemState } from '../../../lib/atemState';
-export declare class TransitionStingerCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../../AbstractCommand';
+import { AtemState } from '../../../state';
+import { StingerTransitionSettings } from '../../../state/video';
+export declare class TransitionStingerCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
     mixEffect: number;
-    flags: number;
-    source: number;
-    preMultipliedKey: boolean;
-    clip: number;
-    gain: number;
-    invert: boolean;
-    preroll: number;
-    clipDuration: number;
-    triggerPoint: number;
-    mixRate: number;
-    maskFlags: {
-        Source: number;
-        PreMultipliedKey: number;
-        Clip: number;
-        Gain: number;
-        Invert: number;
-        Preroll: number;
-        ClipDuration: number;
-        TriggerPoint: number;
-        MixRate: number;
-    };
-    deserialize(rawCommand: Buffer): void;
-    serialize(): Buffer;
-    getAttributes(): {
-        mixEffect: number;
+    MaskFlags: {
         source: number;
-        preMultipliedKey: boolean;
+        preMultipliedKey: number;
         clip: number;
         gain: number;
-        invert: boolean;
+        invert: number;
         preroll: number;
         clipDuration: number;
         triggerPoint: number;
         mixRate: number;
     };
+    properties: StingerTransitionSettings;
+    updateProps(newProps: Partial<StingerTransitionSettings>): void;
+    deserialize(rawCommand: Buffer): void;
+    serialize(): Buffer;
     applyToState(state: AtemState): void;
 }

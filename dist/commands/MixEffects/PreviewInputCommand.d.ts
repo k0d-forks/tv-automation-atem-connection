@@ -1,18 +1,13 @@
 /// <reference types="node" />
-import IAbstractCommand from '../AbstractCommand';
-import { AtemState } from '../../lib/atemState';
-export declare class PreviewInputCommand implements IAbstractCommand {
-    resolve: () => void;
-    reject: () => void;
+import AbstractCommand from '../AbstractCommand';
+import { AtemState } from '../../state';
+export declare class PreviewInputCommand extends AbstractCommand {
     rawName: string;
-    packetId: number;
-    source: number;
     mixEffect: number;
-    deserialize(rawCommand: Buffer): void;
-    serialize(): Buffer;
-    getAttributes(): {
-        mixEffect: number;
+    properties: {
         source: number;
     };
+    deserialize(rawCommand: Buffer): void;
+    serialize(): Buffer;
     applyToState(state: AtemState): void;
 }

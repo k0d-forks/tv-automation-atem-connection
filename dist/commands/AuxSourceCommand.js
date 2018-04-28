@@ -1,26 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const atemUtil_1 = require("../lib/atemUtil");
-class AuxSourceCommand {
+const AbstractCommand_1 = require("./AbstractCommand");
+class AuxSourceCommand extends AbstractCommand_1.default {
     constructor() {
+        super(...arguments);
         this.rawName = 'AuxS';
     }
     deserialize(rawCommand) {
         this.auxBus = rawCommand[0];
-        this.source = atemUtil_1.Util.parseNumber(rawCommand.slice(2, 4));
-    }
-    serialize() {
-        let rawCommand = 'CAuS';
-        return new Buffer([...Buffer.from(rawCommand), 0x01, this.auxBus, this.source >> 8, this.source & 0xFF]);
-    }
-    getAttributes() {
-        return {
-            auxBus: this.auxBus,
-            source: this.source
+        this.properties = {
+            source: rawCommand.readUInt8(2)
         };
     }
+    serialize() {
+        const rawCommand = 'CAuS';
+        return new Buffer([
+            ...Buffer.from(rawCommand),
+            0x01,
+            this.auxBus,
+            this.properties.source >> 8,
+            this.properties.source & 0xFF
+        ]);
+    }
     applyToState(state) {
-        state.video.auxilliaries[this.auxBus] = this.source;
+        state.video.auxilliaries[this.auxBus] = this.properties.source;
     }
 }
 exports.AuxSourceCommand = AuxSourceCommand;
