@@ -1,26 +1,25 @@
-import IAbstractCommand from '../AbstractCommand'
+import AbstractCommand from '../AbstractCommand'
 
-export class DownstreamKeyTieCommand implements IAbstractCommand {
-	resolve: () => void
-	reject: () => void
-
-	rawName = 'CDsT' // this seems unnecessary.
-	packetId: number
-
+export class DownstreamKeyTieCommand extends AbstractCommand {
+	rawName = 'CDsT'
 	downstreamKeyId: number
-	tie: boolean
+
+	properties: {
+		tie: boolean
+	}
 
 	deserialize () {
 		// nothing
 	}
 
 	serialize () {
-		let rawCommand = 'CDsT'
-		return new Buffer([...Buffer.from(rawCommand), this.downstreamKeyId, this.tie, 0x00, 0x00])
-	}
-
-	getAttributes () {
-		return {}
+		const rawCommand = 'CDsT'
+		return new Buffer([
+			...Buffer.from(rawCommand),
+			this.downstreamKeyId,
+			this.properties.tie,
+			0x00, 0x00
+		])
 	}
 
 	applyToState () {

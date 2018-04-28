@@ -1,27 +1,18 @@
-import IAbstractCommand from '../AbstractCommand'
+import AbstractCommand from '../AbstractCommand'
 
-export class AutoTransitionCommand implements IAbstractCommand {
-	resolve: () => void
-	reject: () => void
-
-	rawName = 'DAut' // this seems unnecessary.
-	packetId: number
-
+export class AutoTransitionCommand extends AbstractCommand {
+	rawName = 'DAut'
 	mixEffect: number
+
+	properties: null
 
 	deserialize (rawCommand: Buffer) {
 		this.mixEffect = rawCommand[0]
 	}
 
 	serialize () {
-		let rawCommand = 'DAut'
+		const rawCommand = 'DAut'
 		return new Buffer([...Buffer.from(rawCommand), this.mixEffect, 0x00, 0x00, 0x00])
-	}
-
-	getAttributes () {
-		return {
-			mixEffect: this.mixEffect
-		}
 	}
 
 	applyToState () {

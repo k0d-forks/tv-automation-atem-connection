@@ -1,36 +1,34 @@
-import IAbstractCommand from '../AbstractCommand'
-import { AtemState } from '../../lib/atemState'
-import { Util } from '../../lib/atemUtil'
+import AbstractCommand from '../AbstractCommand'
+import { AtemState } from '../../state'
 
-export class PreviewInputCommand implements IAbstractCommand {
-	resolve: () => void
-	reject: () => void
-
+export class PreviewInputCommand extends AbstractCommand {
 	rawName = 'PrvI'
-	packetId: number
-
-	source: number
 	mixEffect: number
+
+	properties: {
+		source: number
+	}
 
 	deserialize (rawCommand: Buffer) {
 		this.mixEffect = rawCommand[0]
-		this.source = Util.parseNumber(rawCommand.slice(2, 4))
-	}
-
-	serialize () {
-		let rawCommand = 'CPvI'
-		return new Buffer([...Buffer.from(rawCommand), this.mixEffect, 0x00, this.source >> 8, this.source & 0xFF])
-	}
-
-	getAttributes () {
-		return {
-			mixEffect: this.mixEffect,
-			source: this.source
+		this.properties = {
+			source: rawCommand.readUInt8(2)
 		}
 	}
 
+	serialize () {
+		const rawCommand = 'CPvI'
+		return new Buffer([
+			...Buffer.from(rawCommand),
+			this.mixEffect,
+			0x00,
+			this.properties.source >> 8,
+			this.properties.source & 0xFF
+		])
+	}
+
 	applyToState (state: AtemState) {
-		let mixEffect = state.video.getMe(this.mixEffect)
-		mixEffect.programInput = this.source
+		const mixEffect = state.video.getMe(this.mixEffect)
+		mixEffect.programInput = this.properties.source
 	}
 }

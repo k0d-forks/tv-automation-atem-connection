@@ -2,22 +2,8 @@ import { createSocket, Socket } from 'dgram'
 import { EventEmitter } from 'events'
 import { Util } from './atemUtil'
 import { CommandParser } from './atemCommandParser'
+import { ConnectionState, PacketFlag } from '../enums'
 import AbstractCommand from '../commands/AbstractCommand'
-
-export enum ConnectionState {
-	None = 0x00,
-	SynSent = 0x01,
-	Established = 0x02,
-	Closed = 0x03
-}
-
-export enum PacketFlag {
-	AckRequest = 0x01,
-	Connect = 0x02,
-	Repeat = 0x04,
-	Error = 0x08,
-	AckReply = 0x10
-}
 
 export class AtemSocket extends EventEmitter {
 	private _connectionState = ConnectionState.Closed
@@ -84,9 +70,9 @@ export class AtemSocket extends EventEmitter {
 	}
 
 	public _sendCommand (command: AbstractCommand) {
-		let payload = command.serialize()
+		const payload = command.serialize()
 		this.log(payload)
-		let buffer = new Buffer(16 + payload.length)
+		const buffer = new Buffer(16 + payload.length)
 		buffer.fill(0)
 
 		buffer[0] = (16 + payload.length) / 256 | 0x08
@@ -109,13 +95,13 @@ export class AtemSocket extends EventEmitter {
 	private _receivePacket (packet: Buffer, rinfo: any) {
 		this.log('RECV ', packet)
 		this._lastReceivedAt = Date.now()
-		let length = ((packet[0] & 0x07) << 8) | packet[1]
+		const length = ((packet[0] & 0x07) << 8) | packet[1]
 		if (length !== rinfo.size) return
 
-		let flags = packet[0] >> 3
+		const flags = packet[0] >> 3
 		// this._sessionId = [packet[2], packet[3]]
 		this._sessionId = packet[2] << 8 | packet[3]
-		let remotePacketId = packet[10] << 8 | packet[11]
+		const remotePacketId = packet[10] << 8 | packet[11]
 
 		// Send hello answer packet when receive connect flags
 		if (flags & PacketFlag.Connect && !(flags & PacketFlag.Repeat)) {
@@ -141,8 +127,8 @@ export class AtemSocket extends EventEmitter {
 
 		// Device ack'ed our command
 		if (flags & PacketFlag.AckReply && this._connectionState === ConnectionState.Established) {
-			let ackPacketId = packet[4] << 8 | packet[5]
-			for (let i in this._inFlight) {
+			const ackPacketId = packet[4] << 8 | packet[5]
+			for (const i in this._inFlight) {
 				if (ackPacketId >= this._inFlight[i].packetId) {
 					this.emit('commandAcknowleged', this._inFlight[i].packetId)
 					delete this._inFlight[i]
@@ -152,11 +138,11 @@ export class AtemSocket extends EventEmitter {
 	}
 
 	private _parseCommand (buffer: Buffer, packetId?: number) {
-		let length = Util.parseNumber(buffer.slice(0, 2))
-		let name = Util.parseString(buffer.slice(4, 8))
+		const length = buffer.readUInt16BE(0)
+		const name = buffer.toString('ascii', 4, 8)
 
 		// this.log('COMMAND', `${name}(${length})`, buffer.slice(0, length))
-		let cmd = this._commandParser.commandFromRawName(name)
+		const cmd = this._commandParser.commandFromRawName(name)
 		if (cmd) {
 			cmd.deserialize(buffer.slice(0, length).slice(8))
 			cmd.packetId = packetId || -1
@@ -174,7 +160,7 @@ export class AtemSocket extends EventEmitter {
 	}
 
 	private _sendAck (packetId: number) {
-		let buffer = new Buffer(12)
+		const buffer = new Buffer(12)
 		buffer.fill(0)
 		buffer[0] = 0x80
 		buffer[1] = 0x0C
@@ -187,7 +173,7 @@ export class AtemSocket extends EventEmitter {
 	}
 
 	private _checkForRetransmit () {
-		for (let sentPacket of this._inFlight) {
+		for (const sentPacket of this._inFlight) {
 			if (sentPacket && sentPacket.lastSent + this._inFlightTimeout < Date.now()) {
 				if (sentPacket.resent <= this._maxRetries) {
 					sentPacket.lastSent = Date.now()

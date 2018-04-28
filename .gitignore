@@ -9,3 +9,6 @@ coverage
 wallaby.conf.js
 
 .DS_Store
+
+# JetBrains IDE project files
+/.idea
