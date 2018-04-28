@@ -9,7 +9,7 @@ class AtemSocket extends events_1.EventEmitter {
     constructor(address, port) {
         super();
         this._connectionState = enums_1.ConnectionState.Closed;
-        this._localPacketId = 0;
+        this._localPacketId = 1;
         this._maxPacketID = 1 << 15; // Atem expects 15 not 16 bits before wrapping
         this._port = 9910;
         this._reconnectInterval = 5000;

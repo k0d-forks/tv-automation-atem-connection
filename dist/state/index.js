@@ -12,6 +12,7 @@ class AtemState {
         this.tallies = [];
         this.audio = new audio_1.AtemAudioState();
         this.media = new media_1.MediaState();
+        this.inputs = [];
     }
 }
 exports.AtemState = AtemState;

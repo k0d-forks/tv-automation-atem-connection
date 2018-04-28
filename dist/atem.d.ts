@@ -4,6 +4,7 @@ import { AtemState } from './state';
 import AbstractCommand from './commands/AbstractCommand';
 import { MediaPlayer } from './state/media';
 import { DipTransitionSettings, DVETransitionSettings, MixTransitionSettings, StingerTransitionSettings, SuperSourceBox, TransitionProperties, WipeTransitionSettings } from './state/video';
+import { InputChannel } from "./state/input";
 export interface AtemOptions {
     localPort?: number;
     debug?: boolean;
@@ -41,6 +42,7 @@ export declare class Atem extends EventEmitter {
     macroRun(index?: number): Promise<any>;
     setMediaPlayerSettings(newProps: Partial<MediaPlayer>, player?: number): Promise<any>;
     setSuperSourceBoxSettings(newProps: Partial<SuperSourceBox>, box?: number): Promise<any>;
+    setInputSettings(newProps: Partial<InputChannel>, input?: number): Promise<any>;
     private _mutateState(command);
     private _resolveCommand(packetId);
 }

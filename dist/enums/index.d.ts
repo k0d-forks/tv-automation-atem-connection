@@ -78,3 +78,47 @@ export declare enum MacroAction {
     Continue = 4,
     Delete = 5,
 }
+export declare enum ExternalPorts {
+    None = 0,
+    SDI = 1,
+    HDMI = 2,
+    Component = 4,
+    Composite = 8,
+    SVideo = 16,
+    All = 31,
+}
+export declare enum ExternalPortType {
+    Internal = 0,
+    SDI = 1,
+    HDMI = 2,
+    Composite = 3,
+    Component = 4,
+    SVideo = 5,
+}
+export declare enum InternalPortType {
+    External = 0,
+    Black = 1,
+    ColorBars = 2,
+    ColorGenerator = 3,
+    MediaPlayerFill = 4,
+    MediaPlayerKey = 5,
+    SuperSource = 6,
+    MEOutput = 128,
+    Auxiliary = 129,
+    Mask = 130,
+}
+export declare enum SourceAvailability {
+    None = 0,
+    Auxiliary = 1,
+    Multiviewer = 2,
+    SuperSourceArt = 4,
+    SuperSourceBox = 8,
+    KeySource = 16,
+    All = 31,
+}
+export declare enum MeAvailability {
+    None = 0,
+    Me1 = 1,
+    Me2 = 2,
+    All = 3,
+}

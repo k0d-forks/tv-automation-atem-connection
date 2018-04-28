@@ -2,6 +2,7 @@ import { DeviceInfo } from './info';
 import { AtemVideoState } from './video';
 import { AtemAudioState } from './audio';
 import { MediaState } from './media';
+import { InputChannel } from './input';
 export declare class AtemState {
     info: DeviceInfo;
     video: AtemVideoState;
@@ -12,4 +13,5 @@ export declare class AtemState {
     tallies: Array<number>;
     audio: AtemAudioState;
     media: MediaState;
+    inputs: Array<InputChannel>;
 }

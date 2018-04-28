@@ -146,6 +146,12 @@ class Atem extends events_1.EventEmitter {
         command.updateProps(newProps);
         return this.sendCommand(command);
     }
+    setInputSettings(newProps, input = 0) {
+        const command = new Commands.InputPropertiesCommand();
+        command.inputId = input;
+        command.updateProps(newProps);
+        return this.sendCommand(command);
+    }
     _mutateState(command) {
         command.applyToState(this.state);
         this.emit('stateChanged', this.state, command);

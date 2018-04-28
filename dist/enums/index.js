@@ -87,4 +87,53 @@ var MacroAction;
     MacroAction[MacroAction["Continue"] = 4] = "Continue";
     MacroAction[MacroAction["Delete"] = 5] = "Delete";
 })(MacroAction = exports.MacroAction || (exports.MacroAction = {}));
+var ExternalPorts;
+(function (ExternalPorts) {
+    ExternalPorts[ExternalPorts["None"] = 0] = "None";
+    ExternalPorts[ExternalPorts["SDI"] = 1] = "SDI";
+    ExternalPorts[ExternalPorts["HDMI"] = 2] = "HDMI";
+    ExternalPorts[ExternalPorts["Component"] = 4] = "Component";
+    ExternalPorts[ExternalPorts["Composite"] = 8] = "Composite";
+    ExternalPorts[ExternalPorts["SVideo"] = 16] = "SVideo";
+    ExternalPorts[ExternalPorts["All"] = 31] = "All";
+})(ExternalPorts = exports.ExternalPorts || (exports.ExternalPorts = {}));
+var ExternalPortType;
+(function (ExternalPortType) {
+    ExternalPortType[ExternalPortType["Internal"] = 0] = "Internal";
+    ExternalPortType[ExternalPortType["SDI"] = 1] = "SDI";
+    ExternalPortType[ExternalPortType["HDMI"] = 2] = "HDMI";
+    ExternalPortType[ExternalPortType["Composite"] = 3] = "Composite";
+    ExternalPortType[ExternalPortType["Component"] = 4] = "Component";
+    ExternalPortType[ExternalPortType["SVideo"] = 5] = "SVideo";
+})(ExternalPortType = exports.ExternalPortType || (exports.ExternalPortType = {}));
+var InternalPortType;
+(function (InternalPortType) {
+    InternalPortType[InternalPortType["External"] = 0] = "External";
+    InternalPortType[InternalPortType["Black"] = 1] = "Black";
+    InternalPortType[InternalPortType["ColorBars"] = 2] = "ColorBars";
+    InternalPortType[InternalPortType["ColorGenerator"] = 3] = "ColorGenerator";
+    InternalPortType[InternalPortType["MediaPlayerFill"] = 4] = "MediaPlayerFill";
+    InternalPortType[InternalPortType["MediaPlayerKey"] = 5] = "MediaPlayerKey";
+    InternalPortType[InternalPortType["SuperSource"] = 6] = "SuperSource";
+    InternalPortType[InternalPortType["MEOutput"] = 128] = "MEOutput";
+    InternalPortType[InternalPortType["Auxiliary"] = 129] = "Auxiliary";
+    InternalPortType[InternalPortType["Mask"] = 130] = "Mask";
+})(InternalPortType = exports.InternalPortType || (exports.InternalPortType = {}));
+var SourceAvailability;
+(function (SourceAvailability) {
+    SourceAvailability[SourceAvailability["None"] = 0] = "None";
+    SourceAvailability[SourceAvailability["Auxiliary"] = 1] = "Auxiliary";
+    SourceAvailability[SourceAvailability["Multiviewer"] = 2] = "Multiviewer";
+    SourceAvailability[SourceAvailability["SuperSourceArt"] = 4] = "SuperSourceArt";
+    SourceAvailability[SourceAvailability["SuperSourceBox"] = 8] = "SuperSourceBox";
+    SourceAvailability[SourceAvailability["KeySource"] = 16] = "KeySource";
+    SourceAvailability[SourceAvailability["All"] = 31] = "All";
+})(SourceAvailability = exports.SourceAvailability || (exports.SourceAvailability = {}));
+var MeAvailability;
+(function (MeAvailability) {
+    MeAvailability[MeAvailability["None"] = 0] = "None";
+    MeAvailability[MeAvailability["Me1"] = 1] = "Me1";
+    MeAvailability[MeAvailability["Me2"] = 2] = "Me2";
+    MeAvailability[MeAvailability["All"] = 3] = "All";
+})(MeAvailability = exports.MeAvailability || (exports.MeAvailability = {}));
 //# sourceMappingURL=index.js.map
