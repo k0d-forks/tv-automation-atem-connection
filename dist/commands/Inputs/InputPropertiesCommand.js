@@ -36,6 +36,7 @@ class InputPropertiesCommand extends AbstractCommand_1.default {
             externalPorts.push(enums_1.ExternalPortType.SVideo);
         }
         this.properties = {
+            inputId: rawCommand.readUInt16BE(0),
             longName: atemUtil_1.Util.bufToNullTerminatedString(rawCommand, 2, 20),
             shortName: atemUtil_1.Util.bufToNullTerminatedString(rawCommand, 22, 4),
             externalPorts: externalPorts.length > 0 ? externalPorts : null,
@@ -56,6 +57,9 @@ class InputPropertiesCommand extends AbstractCommand_1.default {
         return Buffer.concat([Buffer.from('CInL', 'ascii'), buffer]);
     }
     applyToState(state) {
+        // @TODO(Lange - 04/30/2018): We may need something to clean up inputs which
+        // don't exist anymore, which can happen when switching the connection from
+        // one model of ATEM to another.
         state.inputs[this.inputId] = Object.assign({}, this.properties);
     }
 }
