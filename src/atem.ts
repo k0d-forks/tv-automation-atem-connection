@@ -14,10 +14,12 @@ import {
 	TransitionProperties,
 	WipeTransitionSettings
 } from './state/video'
-import {InputChannel} from "./state/input";
+import * as USK from './state/video/upstreamKeyers'
+import { InputChannel } from './state/input'
 
 export interface AtemOptions {
-	localPort?: number,
+	address?: string,
+	port?: number,
 	debug?: boolean,
 	externalLog?: (arg0?: any,arg1?: any,arg2?: any,arg3?: any) => void
 }
@@ -32,20 +34,29 @@ export class Atem extends EventEmitter {
 	event: EventEmitter
 	state: AtemState
 	private socket: AtemSocket
-	private _log: (arg0?: any,arg1?: any,arg2?: any,arg3?: any) => void
+	private _log: (...args: any[]) => void
 	private _sentQueue: {[packetId: string]: AbstractCommand } = {}
 
 	constructor (options?: AtemOptions) {
 		super()
 		if (options) {
 			this.DEBUG = options.debug === undefined ? false : options.debug
-			this._log = options.externalLog || function () { return }
+			this._log = options.externalLog || function (...args: any[]): void {
+				console.log(...args)
+			}
 		}
 
 		this.state = new AtemState()
-		this.socket = new AtemSocket()
+		this.socket = new AtemSocket({
+			debug: this.DEBUG,
+			log: this._log,
+			address: (options || {}).address,
+			port: (options || {}).port
+		})
 		this.socket.on('receivedStateChange', (command: AbstractCommand) => this._mutateState(command))
 		this.socket.on('commandAcknowleged', (packetId: number) => this._resolveCommand(packetId))
+		this.socket.on('connect', () => this.emit('connected'))
+		this.socket.on('disconnect', () => this.emit('disconnected'))
 	}
 
 	connect (address: string, port?: number) {
@@ -200,9 +211,83 @@ export class Atem extends EventEmitter {
 		return this.sendCommand(command)
 	}
 
+	setUpstreamKeyerChromaSettings (newProps: Partial<USK.UpstreamKeyerChromaSettings>, me = 0, keyer = 0) {
+		const command = new Commands.MixEffectKeyChromaCommand()
+		command.mixEffect = me
+		command.upstreamKeyerId = keyer
+		command.updateProps(newProps)
+		return this.sendCommand(command)
+	}
+
+	setUpstreamKeyerCutSource (cutSource: number, me = 0, keyer = 0) {
+		const command = new Commands.MixEffectKeyCutSourceSetCommand()
+		command.mixEffect = me
+		command.upstreamKeyerId = keyer
+		command.updateProps({cutSource})
+		return this.sendCommand(command)
+	}
+
+	setUpstreamKeyerFillSource (fillSource: number, me = 0, keyer = 0) {
+		const command = new Commands.MixEffectKeyFillSourceSetCommand()
+		command.mixEffect = me
+		command.upstreamKeyerId = keyer
+		command.updateProps({fillSource})
+		return this.sendCommand(command)
+	}
+
+	setUpstreamKeyerDVESettings (newProps: Partial<USK.UpstreamKeyerDVESettings>, me = 0, keyer = 0) {
+		const command = new Commands.MixEffectKeyDVECommand()
+		command.mixEffect = me
+		command.upstreamKeyerId = keyer
+		command.updateProps(newProps)
+		return this.sendCommand(command)
+	}
+
+	setUpstreamKeyerLumaSettings (newProps: Partial<USK.UpstreamKeyerLumaSettings>, me = 0, keyer = 0) {
+		const command = new Commands.MixEffectKeyLumaCommand()
+		command.mixEffect = me
+		command.upstreamKeyerId = keyer
+		command.updateProps(newProps)
+		return this.sendCommand(command)
+	}
+
+	setUpstreamKeyerMaskSettings (newProps: Partial<USK.UpstreamKeyerMaskSettings>, me = 0, keyer = 0) {
+		const command = new Commands.MixEffectKeyMaskSetCommand()
+		command.mixEffect = me
+		command.upstreamKeyerId = keyer
+		command.updateProps(newProps)
+		return this.sendCommand(command)
+	}
+
+	setUpstreamKeyerPatternSettings (newProps: Partial<USK.UpstreamKeyerPatternSettings>, me = 0, keyer = 0) {
+		const command = new Commands.MixEffectKeyPatternCommand()
+		command.mixEffect = me
+		command.upstreamKeyerId = keyer
+		command.updateProps(newProps)
+		return this.sendCommand(command)
+	}
+
+	setUpstreamKeyerOnAir (onAir: boolean, me = 0, keyer = 0) {
+		const command = new Commands.MixEffectKeyOnAirCommand()
+		command.mixEffect = me
+		command.upstreamKeyerId = keyer
+		command.updateProps({onAir})
+		return this.sendCommand(command)
+	}
+
+	setUpstreamKeyerType (newProps: Partial<USK.UpstreamKeyerTypeSettings>, me = 0, keyer = 0) {
+		const command = new Commands.MixEffectKeyTypeSetCommand()
+		command.mixEffect = me
+		command.upstreamKeyerId = keyer
+		command.updateProps(newProps)
+		return this.sendCommand(command)
+	}
+
 	private _mutateState (command: AbstractCommand) {
-		command.applyToState(this.state)
-		this.emit('stateChanged', this.state, command)
+		if (typeof command.applyToState === 'function') {
+			command.applyToState(this.state)
+			this.emit('stateChanged', this.state, command)
+		}
 	}
 
 	private _resolveCommand (packetId: number) {
