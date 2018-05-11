@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import AbstractCommand from '../commands/AbstractCommand';
 export declare class AtemSocket extends EventEmitter {
     private _connectionState;
+    private _debug;
     private _localPacketId;
     private _maxPacketID;
     private _sessionId;
@@ -15,9 +16,14 @@ export declare class AtemSocket extends EventEmitter {
     private _lastReceivedAt;
     private _inFlight;
     private _commandParser;
-    constructor(address?: string, port?: number);
+    constructor(options: {
+        address?: string;
+        port?: number;
+        debug?: boolean;
+        log?: (args1: any, args2?: any, args3?: any) => void;
+    });
     connect(address?: string, port?: number): void;
-    log(args1: any, args2?: any, args3?: any): void;
+    log(..._args: any[]): void;
     readonly nextPacketId: number;
     _sendCommand(command: AbstractCommand): void;
     private _receivePacket(packet, rinfo);

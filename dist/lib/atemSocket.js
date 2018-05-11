@@ -6,9 +6,10 @@ const atemUtil_1 = require("./atemUtil");
 const atemCommandParser_1 = require("./atemCommandParser");
 const enums_1 = require("../enums");
 class AtemSocket extends events_1.EventEmitter {
-    constructor(address, port) {
+    constructor(options) {
         super();
         this._connectionState = enums_1.ConnectionState.Closed;
+        this._debug = false;
         this._localPacketId = 1;
         this._maxPacketID = 1 << 15; // Atem expects 15 not 16 bits before wrapping
         this._port = 9910;
@@ -18,8 +19,10 @@ class AtemSocket extends events_1.EventEmitter {
         this._lastReceivedAt = Date.now();
         this._inFlight = [];
         this._commandParser = new atemCommandParser_1.CommandParser();
-        this._address = address || this._address;
-        this._port = port || this._port;
+        this._address = options.address || this._address;
+        this._port = options.port || this._port;
+        this._debug = options.debug || false;
+        this.log = options.log || this.log;
         this._socket = dgram_1.createSocket('udp4');
         this._socket.bind(1024 + Math.floor(Math.random() * 64511));
         this._socket.on('message', (packet, rinfo) => this._receivePacket(packet, rinfo));
@@ -47,16 +50,19 @@ class AtemSocket extends events_1.EventEmitter {
         this._sendPacket(atemUtil_1.Util.COMMAND_CONNECT_HELLO);
         this._connectionState = enums_1.ConnectionState.SynSent;
     }
-    log(args1, args2, args3) {
-        // fallback, should be remapped by Atem class
-        console.log(args1, args2, args3);
+    log(..._args) {
+        // Will be re-assigned by the top-level ATEM class.
     }
     get nextPacketId() {
         return this._localPacketId;
     }
     _sendCommand(command) {
+        if (typeof command.serialize !== 'function') {
+            return;
+        }
         const payload = command.serialize();
-        this.log(payload);
+        if (this._debug)
+            this.log('PAYLOAD', payload);
         const buffer = new Buffer(16 + payload.length);
         buffer.fill(0);
         buffer[0] = (16 + payload.length) / 256 | 0x08;
@@ -75,7 +81,8 @@ class AtemSocket extends events_1.EventEmitter {
             this._localPacketId = 0;
     }
     _receivePacket(packet, rinfo) {
-        this.log('RECV ', packet);
+        if (this._debug)
+            this.log('RECV ', packet);
         this._lastReceivedAt = Date.now();
         const length = ((packet[0] & 0x07) << 8) | packet[1];
         if (length !== rinfo.size)
@@ -118,7 +125,7 @@ class AtemSocket extends events_1.EventEmitter {
         const name = buffer.toString('ascii', 4, 8);
         // this.log('COMMAND', `${name}(${length})`, buffer.slice(0, length))
         const cmd = this._commandParser.commandFromRawName(name);
-        if (cmd) {
+        if (cmd && typeof cmd.deserialize === 'function') {
             cmd.deserialize(buffer.slice(0, length).slice(8));
             cmd.packetId = packetId || -1;
             this.emit('receivedStateChange', cmd);
@@ -128,7 +135,8 @@ class AtemSocket extends events_1.EventEmitter {
         }
     }
     _sendPacket(packet) {
-        this.log('SEND ', packet);
+        if (this._debug)
+            this.log('SEND ', packet);
         this._socket.send(packet, 0, packet.length, this._port, this._address);
     }
     _sendAck(packetId) {
@@ -149,12 +157,12 @@ class AtemSocket extends events_1.EventEmitter {
                 if (sentPacket.resent <= this._maxRetries) {
                     sentPacket.lastSent = Date.now();
                     sentPacket.resent++;
-                    this.log('resend ', sentPacket);
+                    this.log('RESEND: ', sentPacket);
                     this._sendPacket(sentPacket.packet);
                 }
                 else {
                     this._inFlight.splice(this._inFlight.indexOf(sentPacket), 1);
-                    this.log('canceled ', sentPacket.packet);
+                    this.log('TIMED OUT: ', sentPacket.packet);
                     // @todo: we should probably break up the connection here.
                 }
             }

@@ -15,12 +15,21 @@ class Atem extends events_1.EventEmitter {
         this._sentQueue = {};
         if (options) {
             this.DEBUG = options.debug === undefined ? false : options.debug;
-            this._log = options.externalLog || function () { return; };
+            this._log = options.externalLog || function (...args) {
+                console.log(...args);
+            };
         }
         this.state = new state_1.AtemState();
-        this.socket = new atemSocket_1.AtemSocket();
+        this.socket = new atemSocket_1.AtemSocket({
+            debug: this.DEBUG,
+            log: this._log,
+            address: (options || {}).address,
+            port: (options || {}).port
+        });
         this.socket.on('receivedStateChange', (command) => this._mutateState(command));
         this.socket.on('commandAcknowleged', (packetId) => this._resolveCommand(packetId));
+        this.socket.on('connect', () => this.emit('connected'));
+        this.socket.on('disconnect', () => this.emit('disconnected'));
     }
     connect(address, port) {
         this.socket.connect(address, port);
@@ -152,9 +161,74 @@ class Atem extends events_1.EventEmitter {
         command.updateProps(newProps);
         return this.sendCommand(command);
     }
+    setUpstreamKeyerChromaSettings(newProps, me = 0, keyer = 0) {
+        const command = new Commands.MixEffectKeyChromaCommand();
+        command.mixEffect = me;
+        command.upstreamKeyerId = keyer;
+        command.updateProps(newProps);
+        return this.sendCommand(command);
+    }
+    setUpstreamKeyerCutSource(cutSource, me = 0, keyer = 0) {
+        const command = new Commands.MixEffectKeyCutSourceSetCommand();
+        command.mixEffect = me;
+        command.upstreamKeyerId = keyer;
+        command.updateProps({ cutSource });
+        return this.sendCommand(command);
+    }
+    setUpstreamKeyerFillSource(fillSource, me = 0, keyer = 0) {
+        const command = new Commands.MixEffectKeyFillSourceSetCommand();
+        command.mixEffect = me;
+        command.upstreamKeyerId = keyer;
+        command.updateProps({ fillSource });
+        return this.sendCommand(command);
+    }
+    setUpstreamKeyerDVESettings(newProps, me = 0, keyer = 0) {
+        const command = new Commands.MixEffectKeyDVECommand();
+        command.mixEffect = me;
+        command.upstreamKeyerId = keyer;
+        command.updateProps(newProps);
+        return this.sendCommand(command);
+    }
+    setUpstreamKeyerLumaSettings(newProps, me = 0, keyer = 0) {
+        const command = new Commands.MixEffectKeyLumaCommand();
+        command.mixEffect = me;
+        command.upstreamKeyerId = keyer;
+        command.updateProps(newProps);
+        return this.sendCommand(command);
+    }
+    setUpstreamKeyerMaskSettings(newProps, me = 0, keyer = 0) {
+        const command = new Commands.MixEffectKeyMaskSetCommand();
+        command.mixEffect = me;
+        command.upstreamKeyerId = keyer;
+        command.updateProps(newProps);
+        return this.sendCommand(command);
+    }
+    setUpstreamKeyerPatternSettings(newProps, me = 0, keyer = 0) {
+        const command = new Commands.MixEffectKeyPatternCommand();
+        command.mixEffect = me;
+        command.upstreamKeyerId = keyer;
+        command.updateProps(newProps);
+        return this.sendCommand(command);
+    }
+    setUpstreamKeyerOnAir(onAir, me = 0, keyer = 0) {
+        const command = new Commands.MixEffectKeyOnAirCommand();
+        command.mixEffect = me;
+        command.upstreamKeyerId = keyer;
+        command.updateProps({ onAir });
+        return this.sendCommand(command);
+    }
+    setUpstreamKeyerType(newProps, me = 0, keyer = 0) {
+        const command = new Commands.MixEffectKeyTypeSetCommand();
+        command.mixEffect = me;
+        command.upstreamKeyerId = keyer;
+        command.updateProps(newProps);
+        return this.sendCommand(command);
+    }
     _mutateState(command) {
-        command.applyToState(this.state);
-        this.emit('stateChanged', this.state, command);
+        if (typeof command.applyToState === 'function') {
+            command.applyToState(this.state);
+            this.emit('stateChanged', this.state, command);
+        }
     }
     _resolveCommand(packetId) {
         if (this._sentQueue[packetId]) {

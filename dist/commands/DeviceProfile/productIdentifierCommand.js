@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const AbstractCommand_1 = require("../AbstractCommand");
+const atemUtil_1 = require("../../lib/atemUtil");
 class ProductIdentifierCommand extends AbstractCommand_1.default {
     constructor() {
         super(...arguments);
@@ -8,7 +9,7 @@ class ProductIdentifierCommand extends AbstractCommand_1.default {
     }
     deserialize(rawCommand) {
         this.properties = {
-            deviceName: rawCommand.toString('ascii'),
+            deviceName: atemUtil_1.Util.bufToNullTerminatedString(rawCommand, 0, 32),
             model: rawCommand[40]
         };
     }

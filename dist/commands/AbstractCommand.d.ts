@@ -10,9 +10,9 @@ export default abstract class AbstractCommand {
     resolve: (cmd: AbstractCommand) => void;
     reject: (cmd: AbstractCommand) => void;
     abstract properties: any;
-    abstract deserialize(rawCommand: Buffer): void;
-    abstract serialize(): Buffer;
-    abstract applyToState(state: AtemState): void;
+    deserialize?(rawCommand: Buffer): void;
+    serialize?(): Buffer;
+    applyToState?(state: AtemState): void;
     updateProps(newProps: object): void;
     protected _updateProps(newProps: Object): void;
 }

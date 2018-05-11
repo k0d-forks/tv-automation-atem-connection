@@ -4,9 +4,11 @@ import { AtemState } from './state';
 import AbstractCommand from './commands/AbstractCommand';
 import { MediaPlayer } from './state/media';
 import { DipTransitionSettings, DVETransitionSettings, MixTransitionSettings, StingerTransitionSettings, SuperSourceBox, TransitionProperties, WipeTransitionSettings } from './state/video';
-import { InputChannel } from "./state/input";
+import * as USK from './state/video/upstreamKeyers';
+import { InputChannel } from './state/input';
 export interface AtemOptions {
-    localPort?: number;
+    address?: string;
+    port?: number;
     debug?: boolean;
     externalLog?: (arg0?: any, arg1?: any, arg2?: any, arg3?: any) => void;
 }
@@ -43,6 +45,15 @@ export declare class Atem extends EventEmitter {
     setMediaPlayerSettings(newProps: Partial<MediaPlayer>, player?: number): Promise<any>;
     setSuperSourceBoxSettings(newProps: Partial<SuperSourceBox>, box?: number): Promise<any>;
     setInputSettings(newProps: Partial<InputChannel>, input?: number): Promise<any>;
+    setUpstreamKeyerChromaSettings(newProps: Partial<USK.UpstreamKeyerChromaSettings>, me?: number, keyer?: number): Promise<any>;
+    setUpstreamKeyerCutSource(cutSource: number, me?: number, keyer?: number): Promise<any>;
+    setUpstreamKeyerFillSource(fillSource: number, me?: number, keyer?: number): Promise<any>;
+    setUpstreamKeyerDVESettings(newProps: Partial<USK.UpstreamKeyerDVESettings>, me?: number, keyer?: number): Promise<any>;
+    setUpstreamKeyerLumaSettings(newProps: Partial<USK.UpstreamKeyerLumaSettings>, me?: number, keyer?: number): Promise<any>;
+    setUpstreamKeyerMaskSettings(newProps: Partial<USK.UpstreamKeyerMaskSettings>, me?: number, keyer?: number): Promise<any>;
+    setUpstreamKeyerPatternSettings(newProps: Partial<USK.UpstreamKeyerPatternSettings>, me?: number, keyer?: number): Promise<any>;
+    setUpstreamKeyerOnAir(onAir: boolean, me?: number, keyer?: number): Promise<any>;
+    setUpstreamKeyerType(newProps: Partial<USK.UpstreamKeyerTypeSettings>, me?: number, keyer?: number): Promise<any>;
     private _mutateState(command);
     private _resolveCommand(packetId);
 }

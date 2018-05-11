@@ -136,4 +136,46 @@ var MeAvailability;
     MeAvailability[MeAvailability["Me2"] = 2] = "Me2";
     MeAvailability[MeAvailability["All"] = 3] = "All";
 })(MeAvailability = exports.MeAvailability || (exports.MeAvailability = {}));
+var BorderBevel;
+(function (BorderBevel) {
+    BorderBevel[BorderBevel["None"] = 0] = "None";
+    BorderBevel[BorderBevel["InOut"] = 1] = "InOut";
+    BorderBevel[BorderBevel["In"] = 2] = "In";
+    BorderBevel[BorderBevel["Out"] = 3] = "Out";
+})(BorderBevel = exports.BorderBevel || (exports.BorderBevel = {}));
+var IsAtKeyFrame;
+(function (IsAtKeyFrame) {
+    IsAtKeyFrame[IsAtKeyFrame["None"] = 0] = "None";
+    IsAtKeyFrame[IsAtKeyFrame["A"] = 1] = "A";
+    IsAtKeyFrame[IsAtKeyFrame["B"] = 2] = "B";
+    IsAtKeyFrame[IsAtKeyFrame["RunToInfinite"] = 4] = "RunToInfinite";
+})(IsAtKeyFrame = exports.IsAtKeyFrame || (exports.IsAtKeyFrame = {}));
+var Pattern;
+(function (Pattern) {
+    Pattern[Pattern["LeftToRightBar"] = 0] = "LeftToRightBar";
+    Pattern[Pattern["TopToBottomBar"] = 1] = "TopToBottomBar";
+    Pattern[Pattern["HorizontalBarnDoor"] = 2] = "HorizontalBarnDoor";
+    Pattern[Pattern["VerticalBarnDoor"] = 3] = "VerticalBarnDoor";
+    Pattern[Pattern["CornersInFourBox"] = 4] = "CornersInFourBox";
+    Pattern[Pattern["RectangleIris"] = 5] = "RectangleIris";
+    Pattern[Pattern["DiamondIris"] = 6] = "DiamondIris";
+    Pattern[Pattern["CircleIris"] = 7] = "CircleIris";
+    Pattern[Pattern["TopLeftBox"] = 8] = "TopLeftBox";
+    Pattern[Pattern["TopRightBox"] = 9] = "TopRightBox";
+    Pattern[Pattern["BottomRightBox"] = 10] = "BottomRightBox";
+    Pattern[Pattern["BottomLeftBox"] = 11] = "BottomLeftBox";
+    Pattern[Pattern["TopCentreBox"] = 12] = "TopCentreBox";
+    Pattern[Pattern["RightCentreBox"] = 13] = "RightCentreBox";
+    Pattern[Pattern["BottomCentreBox"] = 14] = "BottomCentreBox";
+    Pattern[Pattern["LeftCentreBox"] = 15] = "LeftCentreBox";
+    Pattern[Pattern["TopLeftDiagonal"] = 16] = "TopLeftDiagonal";
+    Pattern[Pattern["TopRightDiagonal"] = 17] = "TopRightDiagonal";
+})(Pattern = exports.Pattern || (exports.Pattern = {}));
+var MixEffectKeyType;
+(function (MixEffectKeyType) {
+    MixEffectKeyType[MixEffectKeyType["Luma"] = 0] = "Luma";
+    MixEffectKeyType[MixEffectKeyType["Chroma"] = 1] = "Chroma";
+    MixEffectKeyType[MixEffectKeyType["Pattern"] = 2] = "Pattern";
+    MixEffectKeyType[MixEffectKeyType["DVE"] = 3] = "DVE";
+})(MixEffectKeyType = exports.MixEffectKeyType || (exports.MixEffectKeyType = {}));
 //# sourceMappingURL=index.js.map
