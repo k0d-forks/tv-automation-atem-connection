@@ -6,6 +6,7 @@ import { MediaPlayer } from './state/media';
 import { DipTransitionSettings, DVETransitionSettings, MixTransitionSettings, StingerTransitionSettings, SuperSourceBox, TransitionProperties, WipeTransitionSettings } from './state/video';
 import * as USK from './state/video/upstreamKeyers';
 import { InputChannel } from './state/input';
+import { DownstreamKeyerGeneral, DownstreamKeyerMask } from './state/video/downstreamKeyers';
 export interface AtemOptions {
     address?: string;
     port?: number;
@@ -41,6 +42,11 @@ export declare class Atem extends EventEmitter {
     setAuxSource(source: number, bus?: number): Promise<any>;
     setDownstreamKeyTie(tie: boolean, key?: number): Promise<any>;
     setDownstreamKeyOnAir(onAir: boolean, key?: number): Promise<any>;
+    setDownstreamKeyCutSource(input: number, key?: number): Promise<any>;
+    setDownstreamKeyFillSource(input: number, key?: number): Promise<any>;
+    setDownstreamKeyGeneralProperties(props: Partial<DownstreamKeyerGeneral>, key?: number): Promise<any>;
+    setDownstreamKeyMaskSettings(props: Partial<DownstreamKeyerMask>, key?: number): Promise<any>;
+    setDownstreamKeyRate(rate: number, key?: number): Promise<any>;
     macroRun(index?: number): Promise<any>;
     setMediaPlayerSettings(newProps: Partial<MediaPlayer>, player?: number): Promise<any>;
     setSuperSourceBoxSettings(newProps: Partial<SuperSourceBox>, box?: number): Promise<any>;

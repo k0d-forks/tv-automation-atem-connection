@@ -1,11 +1,6 @@
 import * as Enum from '../../enums';
 import * as USK from './upstreamKeyers';
-export interface DownstreamKeyer {
-    onAir: boolean;
-    inTransition: boolean;
-    isAuto: boolean;
-    remainingFrames: number;
-}
+import { DownstreamKeyer } from './downstreamKeyers';
 export interface DipTransitionSettings {
     rate: number;
     input: number;
@@ -110,4 +105,5 @@ export declare class AtemVideoState {
     auxilliaries: Array<number>;
     superSourceBoxes: Array<SuperSourceBox>;
     getMe(index: number): MixEffect;
+    getDownstreamKeyer(index: number): DownstreamKeyer;
 }

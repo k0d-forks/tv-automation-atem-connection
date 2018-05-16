@@ -22,7 +22,7 @@ class DownstreamKeyStateCommand extends AbstractCommand_1.default {
         return new Buffer(0);
     }
     applyToState(state) {
-        state.video.downstreamKeyers[this.downstreamKeyId] = Object.assign({}, this.properties);
+        state.video.downstreamKeyers[this.downstreamKeyId] = Object.assign({}, this.properties, state.video.downstreamKeyers[this.downstreamKeyId]);
     }
 }
 exports.DownstreamKeyStateCommand = DownstreamKeyStateCommand;

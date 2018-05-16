@@ -35,6 +35,12 @@ class AtemVideoState {
         }
         return this.ME[index];
     }
+    getDownstreamKeyer(index) {
+        if (!this.downstreamKeyers[index]) {
+            this.downstreamKeyers[index] = {};
+        }
+        return this.downstreamKeyers[index];
+    }
 }
 exports.AtemVideoState = AtemVideoState;
 //# sourceMappingURL=index.js.map

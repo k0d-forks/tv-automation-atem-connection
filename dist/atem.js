@@ -137,6 +137,36 @@ class Atem extends events_1.EventEmitter {
         command.updateProps({ onAir });
         return this.sendCommand(command);
     }
+    setDownstreamKeyCutSource(input, key = 0) {
+        const command = new Commands.DownstreamKeyCutSourceCommand();
+        command.downstreamKeyerId = key;
+        command.updateProps({ input });
+        return this.sendCommand(command);
+    }
+    setDownstreamKeyFillSource(input, key = 0) {
+        const command = new Commands.DownstreamKeyFillSourceCommand();
+        command.downstreamKeyerId = key;
+        command.updateProps({ input });
+        return this.sendCommand(command);
+    }
+    setDownstreamKeyGeneralProperties(props, key = 0) {
+        const command = new Commands.DownstreamKeyGeneralCommand();
+        command.downstreamKeyerId = key;
+        command.updateProps(props);
+        return this.sendCommand(command);
+    }
+    setDownstreamKeyMaskSettings(props, key = 0) {
+        const command = new Commands.DownstreamKeyMaskCommand();
+        command.downstreamKeyerId = key;
+        command.updateProps(props);
+        return this.sendCommand(command);
+    }
+    setDownstreamKeyRate(rate, key = 0) {
+        const command = new Commands.DownstreamKeyRateCommand();
+        command.downstreamKeyerId = key;
+        command.updateProps({ rate });
+        return this.sendCommand(command);
+    }
     macroRun(index = 0) {
         const command = new Commands.MacroActionCommand();
         command.index = index;
