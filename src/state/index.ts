@@ -4,6 +4,7 @@ import { AtemAudioState } from './audio'
 import { MediaState } from './media'
 import { InputChannel } from './input'
 import { MacroPlayerState } from './macroPlayer'
+import { Settings } from './settings'
 
 export class AtemState {
 	info = new DeviceInfo()
@@ -17,4 +18,5 @@ export class AtemState {
 	media: MediaState = new MediaState()
 	inputs: Array<InputChannel> = []
 	macroPlayer: MacroPlayerState
+	settings: Settings = new Settings()
 }
